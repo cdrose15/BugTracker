@@ -18,6 +18,7 @@ namespace BugTracker.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string DisplayName { get { return FirstName + " " + LastName; } }
 
         public virtual ICollection<Project> Projects { get; set; }
 

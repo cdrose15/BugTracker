@@ -1,0 +1,5 @@
+﻿body{ background: url(/img/body-bg.png); color:#838383;}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: White;
+}

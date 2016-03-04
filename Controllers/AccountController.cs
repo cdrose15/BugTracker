@@ -12,7 +12,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
-    [Authorize]
+
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -102,6 +102,50 @@ namespace BugTracker.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+        }
+
+        // POST: /Account/DemoSubmitterLogin
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoSubmitterLogin()
+        {
+            var email = "Submitter@test.com";
+            var password = "Password-1";
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+            return RedirectToAction("Index", "Home");
+        }
+
+        // POST: /Account/DemoDeveloperLogin
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoDeveloperLogin()
+        {
+            var email = "Developer@test.com";
+            var password = "Password-1";
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+            return RedirectToAction("Index", "Home");
+        }
+
+        // POST: /Account/DemoProjectManagerLogin
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoProjectManagerLogin()
+        {
+            var email = "ProjectMgr@test.com";
+            var password = "Password-1";
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+            return RedirectToAction("Index", "Home");
+        }
+
+        // POST: /Account/DemoAdminManagerLogin
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoAdminLogin()
+        {
+            var email = "Administrator@test.com";
+            var password = "Password-1";
+            var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -230,7 +274,8 @@ namespace BugTracker.Controllers
                 // Send an email with this link
                  string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                  var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                 await UserManager.SendEmailAsync(user.Id, "Reset BugTracker Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here.</a> <br>" +
+                     "If you did not request a password change please contact your Administrator.");
                  return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
@@ -445,8 +490,8 @@ namespace BugTracker.Controllers
             string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
             var callbackUrl = Url.Action("ConfirmEmail", "Account",
                new { userId = userID, code = code }, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(userID, subject,
-               "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+            await UserManager.SendEmailAsync(userID, "BugTracker-Confirm Email",
+               "Please confirm your BugTracker account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
         }

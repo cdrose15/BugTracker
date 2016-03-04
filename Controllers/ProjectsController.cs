@@ -8,17 +8,71 @@ using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 using BugTracker.Models.CodeFirst;
+using Microsoft.AspNet.Identity;
+using BugTracker.Models.Helpers;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
+        [Authorize(Roles ="Administrator, Project Manager, Developer")]
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            if(!User.IsInRole("Administrator"))
+            {
+                return View(user.Projects.ToList());
+            }
+
+            return View(db.Projects.ToList());          
+        }
+
+        // GET: Projects/ProjectUsers
+        [Authorize(Roles ="Administrator, Project Manager")]
+        [HttpGet]
+        public PartialViewResult _ProjectUsers(int id)
+        {
+            var project = db.Projects.Find(id);
+            AssignProjectsViewModel ViewModel = new AssignProjectsViewModel();
+            ProjectUsersHelper helper = new ProjectUsersHelper();
+            var selected = helper.UsersOnProject(id).Select(a => a.Id) ;
+
+            ViewModel.Users= new MultiSelectList(db.Users, "Id", "DisplayName", selected);
+            ViewModel.Project = project;
+
+            return PartialView(ViewModel);
+        }
+
+        // POST: Project/ProjectUsers
+        [Authorize(Roles = "Administrator, Project Manager")]
+        [HttpPost]
+        public ActionResult ProjectUsers(AssignProjectsViewModel ViewModel, int id)
+        {
+            ProjectUsersHelper helper = new ProjectUsersHelper();
+
+            if (ViewModel.SelectedUsers == null)
+            {
+                ViewModel.SelectedUsers = new string[] { "" };
+            }
+
+            foreach (var user in db.Users.Select(u => u.Id))
+            {
+                if (ViewModel.SelectedUsers.Contains(user))
+                {
+                    helper.AddUserToProject(user, id);
+                }
+                else
+                {
+                    helper.RemoveUserFromProject(user, id);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Projects/Details/5
@@ -37,6 +91,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Create
+        [Authorize(Roles ="Administrator, Project Manager")]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +100,7 @@ namespace BugTracker.Controllers
         // POST: Projects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles ="Administrator, Project Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] Project project)
@@ -60,6 +116,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize (Roles ="Administrator, Project Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -77,6 +134,7 @@ namespace BugTracker.Controllers
         // POST: Projects/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles ="Administrator, Project Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] Project project)

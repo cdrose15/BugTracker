@@ -219,11 +219,14 @@
     <Compile Include="Controllers\TicketCommentsController.cs" />
     <Compile Include="Controllers\TicketLogsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AssignProjectsViewModel.cs" />
+    <Compile Include="Models\AssignRolesViewModel.cs" />
     <Compile Include="Models\CodeFirst\Project.cs" />
     <Compile Include="Models\CodeFirst\TicketComment.cs" />
     <Compile Include="Models\CodeFirst\Ticket.cs" />
@@ -232,20 +235,28 @@
     <Compile Include="Models\CodeFirst\TicketPriority.cs" />
     <Compile Include="Models\CodeFirst\TicketStatus.cs" />
     <Compile Include="Models\CodeFirst\TicketType.cs" />
+    <Compile Include="Models\Helpers\ProjectUsersHelper.cs" />
+    <Compile Include="Models\Helpers\UserRolesHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\MyStyles.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\body-bg.png" />
+    <Content Include="img\signin\check.png" />
+    <Content Include="img\signin\password.png" />
+    <Content Include="img\signin\user.png" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -265,6 +276,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="TemplateCSS\signin.css" />
+    <Content Include="TemplateCSS\style.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -319,14 +332,17 @@
     <Content Include="Views\TicketLogs\Details.cshtml" />
     <Content Include="Views\TicketLogs\Edit.cshtml" />
     <Content Include="Views\TicketLogs\Index.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Users\Users.cshtml" />
+    <Content Include="Views\Users\UserRoles.cshtml" />
+    <Content Include="Views\Manage\EditProfile.cshtml" />
+    <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Projects\_ProjectUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
