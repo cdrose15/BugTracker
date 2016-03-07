@@ -12,7 +12,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
-
+    [RequireHttps]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

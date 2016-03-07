@@ -3,3 +3,22 @@
 .navbar-inverse .navbar-nav > li > a {
     color: White;
 }
+
+.hiddenRow {
+    padding: 0 !important;
+}
+
+.mypage-header{
+    text-align:center;
+}
+
+.panel-border{
+    border: thin solid;
+}
+
+/*body { 
+    background-image: url(/img/bug.png);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+}*/

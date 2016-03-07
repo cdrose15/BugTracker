@@ -11,6 +11,7 @@ using BugTracker.Models.CodeFirst;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class TicketsController : Controller
     {

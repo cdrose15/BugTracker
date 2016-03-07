@@ -1,0 +1,52 @@
+﻿@using BugTracker.Models
+@model LoginViewModel
+
+<div class="account-container">
+
+    <div class="content clearfix">
+
+      @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+      {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <h2>Member Login</h2>
+
+            <div class="login-fields">
+
+                <div class="field">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "login username-field", placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div> <!-- /field -->
+
+                <div class="field">
+                    @Html.PasswordFor(m => m.Password, new { @class = "login password-field", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div> <!-- /password -->
+
+            </div> <!-- /login-fields -->
+
+            <div class="login-actions">
+
+                <div>
+                    <p>
+                        <h6>@Html.CheckBoxFor(m => m.RememberMe)
+                            Keep me signed in</h6>      
+                    </p>        
+                    <p>
+                        <h6>@Html.ActionLink("Forgot your password?", "ForgotPassword")</h6>
+                    </p>
+                </div>
+
+                <button class="button btn btn-success btn-large" type="submit">Sign In</button>
+        
+         </div> <!-- .actions -->
+      }
+
+    </div> <!-- /content -->
+
+</div> <!-- /account-container -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

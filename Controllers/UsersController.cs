@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles ="Administrator")]
     public class UsersController : Controller
     {

@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row">
+        <form method="Post" action="@Url.Action("DemoAdminLogin","Account")">
+            <input type="submit" value="Administrator" class="btn btn-sm btn-default" />
+        </form>
+        <form method="Post" action="@Url.Action("DemoProjectManagerLogin","Account")">
+            <input type="submit" value="ProjectMgr" class="btn btn-sm btn-default" />
+        </form>
+        <form method="Post" action="@Url.Action("DemoDeveloperLogin","Account")">
+            <input type="submit" value="Developer" class="btn btn-sm btn-default" />
+        </form>
+        <form method="Post" action="@Url.Action("DemoSubmitterLogin","Account")">
+            <input type="submit" value="Submitter" class="btn btn-sm btn-default" />
+        </form>
+</div>

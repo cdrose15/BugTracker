@@ -10,6 +10,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ManageController : Controller
     {
@@ -216,9 +217,9 @@ namespace BugTracker.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
+        public PartialViewResult _ChangePassword()
         {
-            return View();
+            return PartialView();
         }
 
         //

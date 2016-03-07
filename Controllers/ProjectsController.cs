@@ -13,6 +13,7 @@ using BugTracker.Models.Helpers;
 
 namespace BugTracker.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ProjectsController : Controller
     {
@@ -28,30 +29,32 @@ namespace BugTracker.Controllers
             {
                 return View(user.Projects.ToList());
             }
-
+           // ViewBag.SelectedUsers = new SelectList(db.Users, "Id", "DisplayName");
+           
             return View(db.Projects.ToList());          
         }
 
         // GET: Projects/ProjectUsers
         [Authorize(Roles ="Administrator, Project Manager")]
         [HttpGet]
-        public PartialViewResult _ProjectUsers(int id)
+        public ActionResult ProjectUsers(int id)
         {
             var project = db.Projects.Find(id);
             AssignProjectsViewModel ViewModel = new AssignProjectsViewModel();
             ProjectUsersHelper helper = new ProjectUsersHelper();
             var selected = helper.UsersOnProject(id).Select(a => a.Id) ;
+            //ViewBag.SelectedUsers = new SelectList(db.Users, "Id", "DisplayName", project.Users.Select(u => u.Id));
 
-            ViewModel.Users= new MultiSelectList(db.Users, "Id", "DisplayName", selected);
+           ViewModel.Users= new MultiSelectList(db.Users, "Id", "DisplayName", selected);
             ViewModel.Project = project;
 
-            return PartialView(ViewModel);
+            return View(ViewModel);
         }
 
         // POST: Project/ProjectUsers
         [Authorize(Roles = "Administrator, Project Manager")]
         [HttpPost]
-        public ActionResult ProjectUsers(AssignProjectsViewModel ViewModel, int id)
+        public ActionResult ProjectUsers(AssignProjectsViewModel ViewModel)
         {
             ProjectUsersHelper helper = new ProjectUsersHelper();
 
@@ -64,11 +67,11 @@ namespace BugTracker.Controllers
             {
                 if (ViewModel.SelectedUsers.Contains(user))
                 {
-                    helper.AddUserToProject(user, id);
+                    helper.AddUserToProject(user, ViewModel.Project.Id);
                 }
                 else
                 {
-                    helper.RemoveUserFromProject(user, id);
+                    helper.RemoveUserFromProject(user, ViewModel.Project.Id);
                 }
             }
 
@@ -92,9 +95,9 @@ namespace BugTracker.Controllers
 
         // GET: Projects/Create
         [Authorize(Roles ="Administrator, Project Manager")]
-        public ActionResult Create()
+        public PartialViewResult _Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Projects/Create
@@ -117,18 +120,11 @@ namespace BugTracker.Controllers
 
         // GET: Projects/Edit/5
         [Authorize (Roles ="Administrator, Project Manager")]
-        public ActionResult Edit(int? id)
+        public PartialViewResult _Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Project project = db.Projects.Find(id);
-            if (project == null)
-            {
-                return HttpNotFound();
-            }
-            return View(project);
+
+            return PartialView(project);
         }
 
         // POST: Projects/Edit/5

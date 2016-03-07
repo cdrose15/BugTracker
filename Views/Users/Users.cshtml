@@ -1,25 +1,50 @@
 ﻿@model IEnumerable<BugTracker.Models.ApplicationUser>
 
-<table class="table">
-    <tr>
-        <th>
-           Name
-        </th>
-        <th></th>
-    </tr>
+<div container>
+    <div class="col-md-12">
+        <div class="mypage-header panel-heading">
+            <h3>User List</h3>
+        </div>
+    </div>
+    <table class="table" id="users">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Update Roles", "UserRoles", new { id = item.Id }, new {@class="btn btn-default"})
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.ActionLink("Change Roles", "UserRoles", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-            </td>
-        </tr>
+    @section scripts{
+        <script type="text/javascript">
+
+            $('#users').DataTable({
+                "paging": true,
+                "pageLength": 10,
+                "bLengthChange": false,
+                "info": false,
+                "bFilter": false,
+                "ordering": false,
+                "pagingType": "numbers",
+                "searching": true
+            });
+        </script>
     }
-
-</table>
 

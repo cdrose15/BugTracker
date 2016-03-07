@@ -1,62 +1,110 @@
 ﻿@model IEnumerable<BugTracker.Models.CodeFirst.Project>
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Project List</h2>
-
-<p>
-    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
-    {
-        @Html.ActionLink("New Project", "Create", null, new { @class = "btn btn-default" })
-    }
-</p>
 <div container>
-    <div class="col-md-6">
-<table id="projects">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+    <div class="col-md-12">
+        <div class="mypage-header panel-heading">
+            <h3>Project List</h3>
+        </div>
+    </div>
+        <div class="col-md-8">
+            <div>
+                <div class="panel-heading">
+                    <h4></h4>
+                </div>
+                <table class="table" id="projects">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @*<button data-toggle="collapse" data-target=".accordion">More</button>*@
+                                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
                 {
-                    <button class="assign-user btn btn-default" data-id="@item.Id" >Assign Users</button>
-                    @Html.ActionLink("Assign Users", "ProjectUsers", new { id = item.Id, }, new { @class = "btn btn-default" })
-                }
-                @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
-                {
-                    @Html.ActionLink("Edit Project", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
-                }
-                @*@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })*@
-            </td>
-        </tr>
-    }
-        </tbody>
-</table>
-</div>
-    <div id="assign"></div>
+                                        @Html.ActionLink("Assign / Edit", "ProjectUsers", "Projects", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        @*<button class="assign-user btn btn-default" data-id="@item.Id" >Assign Users</button>*@
+                                        @*@Html.ActionLink("Assign Users", "ProjectUsers", new { id = item.Id, }, new { @class = "btn btn-default" })*@
+                                    }
+                                    @*@if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                                {
+                                            @Html.ActionLink("Edit Project", "Edit", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        }*@
+                                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })*@
+                                </td>
+                            </tr>
+                            @*<tr>
+                            <td colspan="3" class="hiddenRow">
+                                <div class="accordion collapse">@Html.Action("_ProjectUsers", "Projects", new { id = item.Id }) </div>
+                            </td>
+                        </tr>*@
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+    </div>
+@if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+{
+    <div class="col-md-4">
+        @Html.Action("_Create", "Projects")
+    </div>
+}
+    @*<div id="assign">
+        @Html.Action("_ProjectUsers","Projects")
+        <h3>@Model.First().Name</h3>
+        @using (Html.BeginForm("ProjectUsers", "Projects"))
+        {
+            @Html.HiddenFor(model => model.First().Id)
+
+            <div class="col-md-4">
+                <div class="form-horizontal">
+                    @Html.ListBox("SelectedUsers", null, new { @id = "multi" })
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+             
+            </div>
+        
+    </div>*@
 </div>
 
 @section scripts{
+<script src="~/Scripts/bootstrap-multiselect.js"></script>
+
     <script type="text/javascript">
 
         $('.assign-user').click(function () {
             $('#assign').load('/Projects/_ProjectUsers/' + $(this).data('id'));
         });
+
+        $(document).ready(function () {
+            $('.multi').multiselect();
+        });
+
+        $('.collapse').on('show.bs.collapse', function () {
+            $('.collapse.in').collapse('hide');
+        });
+
+
+    //$('#assign').on("click","#specificBtn", function(){ // where #specicifcBtn is inside the parial view that loads in #assign
+
+        //})
 
         $('#projects').DataTable({
             "paging": true,
