@@ -217,9 +217,9 @@ namespace BugTracker.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        public PartialViewResult _ChangePassword()
+        public ActionResult ChangePassword()
         {
-            return PartialView();
+            return View();
         }
 
         //

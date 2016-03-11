@@ -1,93 +1,118 @@
 ﻿@model IEnumerable<BugTracker.Models.CodeFirst.Ticket>
+@using Microsoft.AspNet.Identity;
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
+<div class="col-md-12">
+    <div class="mypage-header panel-heading">
+        <h3>Ticket List</h3>
+        <h5 class="text-danger">@ViewBag.EditMessage</h5>
+    </div>
+</div>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketStatus.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TicketType.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FileSource)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedUserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssigneeUserId)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatus.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketType.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FileSource)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedUserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssigneeUserId)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+<table class="table" id="tickets">
+    <thead>
+        <tr>
+            <th>
+                Created
+            </th>
+            <th>
+                Project
+            </th>
+            <th>
+                Priority
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Ticket
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Owner
+            </th>
+            <th>
+                Assigned
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.CreatedDate.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.CreatedUser.DisplayName
+                </td>
+                <td>
+                    @if (item.AssigneeUserId != null)
+                    {
+                        @item.AssigneeUser.DisplayName
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                    }
+                    @if(User.IsInRole("Developer"))
+                    {
+                        if(item.AssigneeUserId == User.Identity.GetUserId())
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                        }
+                    }
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
+                    @if (User.IsInRole("Administrator") || (User.IsInRole("Project Manager")))
+                    {
+                        @Html.ActionLink("Assign", "AssignUser", new { id = item.Id })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+@section scripts{
+    <script type="text/javascript">
+        $('#tickets').DataTable({
+            "paging": true,
+            "pageLength": 10,
+            "bLengthChange": false,
+            "info": false,
+            "bFilter": false,
+            //"ordering": false,
+            "pagingType": "numbers",
+            "searching": true
+        });
+    </script>
+}

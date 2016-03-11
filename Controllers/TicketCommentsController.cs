@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 using BugTracker.Models.CodeFirst;
+using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace BugTracker.Controllers
 {
@@ -17,110 +19,49 @@ namespace BugTracker.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: TicketComments
-        public ActionResult Index()
-        {
-            var ticketComments = db.TicketComments.Include(t => t.Ticket);
-            return View(ticketComments.ToList());
-        }
-
-        // GET: TicketComments/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketComment ticketComment = db.TicketComments.Find(id);
-            if (ticketComment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticketComment);
-        }
-
-        // GET: TicketComments/Create
-        public ActionResult Create()
-        {
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title");
-            return View();
-        }
-
         // POST: TicketComments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CreatedDate,Comment,Attachment,UserId,TicketId")] TicketComment ticketComment)
+        public ActionResult Create([Bind(Include = "Id,TicketId,Comment,Attachment")] TicketComment ticketComment, HttpPostedFileBase image)
         {
+            var user = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
+                ticketComment.CreatedDate = DateTime.UtcNow;
+                ticketComment.UserId = user;
+                if(ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/img/attachments/"), fileName));
+                    ticketComment.Attachment = "~/img/attachments/" + fileName;
+                }
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                db.TicketComments.Include(c => c.Ticket).Include(c => c.Ticket.AssigneeUser).FirstOrDefault(t => t.Id == ticketComment.Id);
+                if (ticketComment.UserId != ticketComment.Ticket.AssigneeUserId)
+                {
+                    if (ticketComment.Ticket.AssigneeUserId != null)
+                    {
+                        var assignedDeveloper = ticketComment.Ticket.AssigneeUser.Email;
+                        var website = "https://crose-bugtracker.azurewebsites.net/Tickets/Details/" + ticketComment.Ticket.Id;
+                        var email = new EmailService();
+                        var mail = new IdentityMessage
+                        {
+                            Subject = "BugTracker Notification",
+                            Destination = assignedDeveloper,
+                            Body = $"Hello {ticketComment.Ticket.AssigneeUser.DisplayName}, {ticketComment.Ticket.Title} has been updated. Click here to view changes: {website}"
+                        };
+                        email.SendAsync(mail);
+                    }
+                }
+
+                return RedirectToAction("Details","Tickets", new { id = ticketComment.TicketId });
             }
 
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
+            //ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
             return View(ticketComment);
-        }
-
-        // GET: TicketComments/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketComment ticketComment = db.TicketComments.Find(id);
-            if (ticketComment == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
-            return View(ticketComment);
-        }
-
-        // POST: TicketComments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CreatedDate,Comment,Attachment,UserId,TicketId")] TicketComment ticketComment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(ticketComment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.TicketId = new SelectList(db.Tickets, "Id", "Title", ticketComment.TicketId);
-            return View(ticketComment);
-        }
-
-        // GET: TicketComments/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TicketComment ticketComment = db.TicketComments.Find(id);
-            if (ticketComment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(ticketComment);
-        }
-
-        // POST: TicketComments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            TicketComment ticketComment = db.TicketComments.Find(id);
-            db.TicketComments.Remove(ticketComment);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

@@ -14,6 +14,7 @@ namespace BugTracker.Models
         public ApplicationUser()
         {
             this.Projects = new HashSet<Project>();
+            this.Tickets = new HashSet<Ticket>();
         }
 
         public string FirstName { get; set; }
@@ -21,6 +22,7 @@ namespace BugTracker.Models
         public string DisplayName { get { return FirstName + " " + LastName; } }
 
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

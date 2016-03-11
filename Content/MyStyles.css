@@ -16,9 +16,18 @@
     border: thin solid;
 }
 
+.body-content{
+    min-height: 100vh;
+}
+
 /*body { 
     background-image: url(/img/bug.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center; 
 }*/
+
+hr{
+    border-top-color :darkgrey;
+}
+

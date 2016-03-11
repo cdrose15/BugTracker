@@ -12,7 +12,7 @@ namespace BugTracker.Models.CodeFirst
         public string Property { get; set; }
         public string OldFieldValue { get; set; }
         public string NewFieldValue { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
     }

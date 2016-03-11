@@ -32,8 +32,8 @@
                                     @*<button data-toggle="collapse" data-target=".accordion">More</button>*@
                                     @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
                 {
-                                        @Html.ActionLink("Assign / Edit", "ProjectUsers", "Projects", new { id = item.Id }, new { @class = "btn btn-default" })
-                                        @*<button class="assign-user btn btn-default" data-id="@item.Id" >Assign Users</button>*@
+                                        @Html.ActionLink("Assign", "ProjectUsers", "Projects", new { id = item.Id }, new { @class = "btn btn-default" })                                      
+                                        <button class="edit-button btn btn-default" data-id="@item.Id">Edit</button>
                                         @*@Html.ActionLink("Assign Users", "ProjectUsers", new { id = item.Id, }, new { @class = "btn btn-default" })*@
                                     }
                                     @*@if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
@@ -57,7 +57,7 @@
     </div>
 @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
 {
-    <div class="col-md-4">
+    <div class="col-md-4" id="edit-div">
         @Html.Action("_Create", "Projects")
     </div>
 }
@@ -89,8 +89,8 @@
 
     <script type="text/javascript">
 
-        $('.assign-user').click(function () {
-            $('#assign').load('/Projects/_ProjectUsers/' + $(this).data('id'));
+        $('.edit-button').click(function () {
+            $('#edit-div').load('/Projects/_Edit/' + $(this).data('id'));
         });
 
         $(document).ready(function () {

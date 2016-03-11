@@ -1,106 +1,171 @@
 ﻿@model BugTracker.Models.CodeFirst.Ticket
+@using Microsoft.AspNet.Identity;
 
-@{
-    ViewBag.Title = "Details";
-}
-
-<h2>Details</h2>
-
-<div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketPriority.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketStatus.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TicketType.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TicketType.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FileSource)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FileSource)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AssigneeUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AssigneeUserId)
-        </dd>
-
-    </dl>
+<div class="col-md-12">
+    <div class="mypage-header panel-heading">
+        <h3>@Model.Title</h3>
+    </div>
+    <div class="mypage-header">
+        @Html.ActionLink("Back", "Index")
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@if (!User.IsInRole("Developer"))
+{
+    <h4><b>Add Comment or Attach Image</b></h4>
+    <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create", "TicketComments")" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <input type="hidden" name="TicketId" value="@Model.Id" />
+            <textarea cols="50" class="form-control" rows="1" type="hidden" name="comment"></textarea>
+        </div>
+        <div class="form-group">
+            <input name="image" type="file" class="form-control" id="fileUpload" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form> <br />
+}
+@if (User.IsInRole("Developer"))
+{
+    if (Model.AssigneeUserId == User.Identity.GetUserId())
+    {
+        <h4><b>Add Comment or Attach Image</b></h4>
+        <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create", "TicketComments")" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <input type="hidden" name="TicketId" value="@Model.Id" />
+                <textarea cols="50" class="form-control" rows="1" type="hidden" name="comment"></textarea>
+            </div>
+            <div class="form-group">
+                <input name="image" type="file" class="form-control" id="fileUpload" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form> <br />
+    }
+}
+<h4><b>Details</b></h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Project
+            </th>
+            <th>
+                Priority
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Updated
+            </th>
+            <th>
+                Owner
+            </th>
+            <th>
+                Assigned
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Project.Name
+            </td>
+            <td>
+                @Model.TicketPriority.Name
+            </td>
+            <td>
+                @Model.TicketStatus.Name
+            </td>
+            <td>
+                @Model.TicketType.Name
+            </td>
+            <td>
+                @Model.CreatedDate.ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                @if (Model.UpdatedDate.HasValue)
+                {
+                    @Model.UpdatedDate.Value.ToString("MM/dd/yyyy")
+                }
+            </td>
+            <td>
+                @Model.CreatedUser.DisplayName
+            </td>
+            <td>
+                @if (Model.AssigneeUser != null)
+                {
+                    @Model.AssigneeUser.DisplayName
+                }
+            </td>
+            <td>
+        </tr>
+    </tbody>
+</table>
+<p><b>Description</b>: @Model.Description </p>
+<br />
+
+@*<h4><b>Add Comment or Attach Image</b></h4>
+    <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create","TicketComments")" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label>Add Commment</label>
+            <input type="hidden" name="TicketId" value="@Model.Id" />
+            <textarea class="form-control" rows="1" type="hidden" name="comment"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Attach Image</label>
+            <input name="image" type="file" class="form-control" id="fileUpload" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form> <br />*@
+<div class="col-md-6">
+    <h4><b>Comments</b></h4>
+    @foreach (var comment in Model.TicketComments)
+    {
+        @*<table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Comment</th>
+                        <th>Attachment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@comment.CreatedDate.ToString("MM/dd/yyyy")</td>
+                        <td>@comment.User.DisplayName</td>
+                        <td>@comment.Comment</td>
+                        <td>
+                            @if (comment.Attachment != null)
+                            {
+                                <p><a target="_blank" href="@Url.Content(comment.Attachment)">View</a></p>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+
+        <p><b>Created On:</b>@comment.CreatedDate.ToString("MM/dd/yyyy")</p>
+        <p><b>By:</b>@comment.User.DisplayName</p>
+        <p>@comment.Comment</p>
+        if (comment.Attachment != null)
+        {
+            <p><a target="_blank" href="@Url.Content(comment.Attachment)">View Attachment</a></p>
+        }
+        <hr />
+    }
+</div>
+<div class="col-md-6">
+    <h4><b>History Log</b></h4>
+
+</div>
+

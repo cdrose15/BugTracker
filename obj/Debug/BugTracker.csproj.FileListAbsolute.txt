@@ -82,6 +82,6 @@ C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTrac
 C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\obj\Debug\BugTracker.csprojResolveAssemblyReference.cache
 C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\obj\Debug\BugTracker.dll
 C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\obj\Debug\BugTracker.pdb
+C:\Users\cdros\OneDrive\Documents\Visual Studio 2015\Projects\BugTracker\BugTracker\obj\Debug\BugTracker.csprojResolveAssemblyReference.cache

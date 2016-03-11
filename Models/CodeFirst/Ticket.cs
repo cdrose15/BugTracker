@@ -7,10 +7,13 @@ namespace BugTracker.Models.CodeFirst
 {
     public class Ticket
     {
+      
+
         public Ticket()
         {
             this.TicketComments = new HashSet<TicketComment>();
             this.TicketLogs = new HashSet<TicketLog>();
+            
         }
 
         public int Id { get; set; }
@@ -19,8 +22,8 @@ namespace BugTracker.Models.CodeFirst
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset? UpdatedDate { get; set; }
         public string FileSource { get; set; }
-        public int CreatedUserId { get; set; }
-        public int AssigneeUserId { get; set; }
+        public string CreatedUserId { get; set; }
+        public string AssigneeUserId { get; set; }
         public int ProjectId { get; set; }
         public int TicketPriorityId { get; set; }
         public int TicketStatusId { get; set; }

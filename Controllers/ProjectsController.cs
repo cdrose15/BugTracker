@@ -42,10 +42,11 @@ namespace BugTracker.Controllers
             var project = db.Projects.Find(id);
             AssignProjectsViewModel ViewModel = new AssignProjectsViewModel();
             ProjectUsersHelper helper = new ProjectUsersHelper();
+            UserRolesHelper roles = new UserRolesHelper();
+            var user = roles.UsersNotInRole("Submitter");
             var selected = helper.UsersOnProject(id).Select(a => a.Id) ;
             //ViewBag.SelectedUsers = new SelectList(db.Users, "Id", "DisplayName", project.Users.Select(u => u.Id));
-
-           ViewModel.Users= new MultiSelectList(db.Users, "Id", "DisplayName", selected);
+            ViewModel.Users= new MultiSelectList(user, "Id", "DisplayName", selected);
             ViewModel.Project = project;
 
             return View(ViewModel);
@@ -111,6 +112,7 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
                 db.Projects.Add(project);
+                
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

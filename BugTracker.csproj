@@ -227,6 +227,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AssignProjectsViewModel.cs" />
     <Compile Include="Models\AssignRolesViewModel.cs" />
+    <Compile Include="Models\AssignTicketsViewModel.cs" />
     <Compile Include="Models\CodeFirst\Project.cs" />
     <Compile Include="Models\CodeFirst\TicketComment.cs" />
     <Compile Include="Models\CodeFirst\Ticket.cs" />
@@ -236,8 +237,10 @@
     <Compile Include="Models\CodeFirst\TicketStatus.cs" />
     <Compile Include="Models\CodeFirst\TicketType.cs" />
     <Compile Include="Models\Helpers\ProjectUsersHelper.cs" />
+    <Compile Include="Models\Helpers\TicketUserHelper.cs" />
     <Compile Include="Models\Helpers\UserRolesHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageUploadValidator.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -251,11 +254,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\body-bg.png" />
+    <Content Include="img\guidely-number.png" />
     <Content Include="img\signin\check.png" />
     <Content Include="img\signin\password.png" />
     <Content Include="img\signin\user.png" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\base.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -266,6 +271,7 @@
     <Content Include="private2.config" />
     <None Include="Properties\PublishProfiles\crose-bugtracker.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\guidely.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -277,6 +283,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="TemplateCSS\guidely.css" />
     <Content Include="TemplateCSS\signin.css" />
     <Content Include="TemplateCSS\style.css" />
     <Content Include="Web.config" />
@@ -306,7 +313,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\_ChangePassword.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
@@ -323,24 +330,16 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
-    <Content Include="Views\TicketComments\Create.cshtml" />
-    <Content Include="Views\TicketComments\Delete.cshtml" />
-    <Content Include="Views\TicketComments\Details.cshtml" />
-    <Content Include="Views\TicketComments\Edit.cshtml" />
-    <Content Include="Views\TicketComments\Index.cshtml" />
-    <Content Include="Views\TicketLogs\Create.cshtml" />
-    <Content Include="Views\TicketLogs\Delete.cshtml" />
-    <Content Include="Views\TicketLogs\Details.cshtml" />
-    <Content Include="Views\TicketLogs\Edit.cshtml" />
-    <Content Include="Views\TicketLogs\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Users\Users.cshtml" />
     <Content Include="Views\Users\UserRoles.cshtml" />
     <Content Include="Views\Manage\EditProfile.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Projects\ProjectUsers.cshtml" />
+    <Content Include="Views\Tickets\AssignUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="img\attachments\" />
     <Folder Include="Properties\App_Data\" />
   </ItemGroup>
   <ItemGroup>
