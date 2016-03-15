@@ -22,7 +22,10 @@
             <input name="image" type="file" class="form-control" id="fileUpload" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
-    </form> <br />
+    </form>
+    <h6>** Attachment limited to a Jpeg, Gif, or Png between 1 KB and 2 MB in size</h6>
+
+     <br />
 }
 @if (User.IsInRole("Developer"))
 {
@@ -126,7 +129,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form> <br />*@
-<div class="col-md-6">
+<div class="col-md-4">
     <h4><b>Comments</b></h4>
     @foreach (var comment in Model.TicketComments)
     {
@@ -164,8 +167,31 @@
         <hr />
     }
 </div>
-<div class="col-md-6">
+<div class="col-md-8">
     <h4><b>History Log</b></h4>
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Edit Date</th>
+                    <th>User</th>
+                    <th>Property</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var log in Model.TicketLogs)
+                { 
+                <tr>
+                    <td>@log.ChangedDate.ToString("MM/dd/yyyy")</td>
+                    <td>@log.User.DisplayName</td>
+                    <td>@log.Property</td>
+                    <td>@log.OldFieldValue</td>
+                    <td>@log.NewFieldValue</td>
+                </tr>
+                }
+            </tbody>
+        </table>
 
 </div>
 

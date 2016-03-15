@@ -1,7 +1,41 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿
+@section scripts{
+   
+<script src="~/Scripts/base.js"></script> 
+<script src="~/Scripts/guidely.min.js"></script>
+<script>
+$(function () {
 
-<p>Use this area to provide additional information.</p>
+	guidely.add ({
+		attachTo: '#tour1'
+		, anchor: 'top-left'
+		, title: 'Guide Title'
+		, text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.'
+	});
+
+	guidely.add ({
+		attachTo: '#tour2'
+		, anchor: 'top-right'
+		, title: 'Guide Title'
+		, text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.'
+	});
+
+	guidely.add ({
+		attachTo: '#tour3'
+		, anchor: 'middle-middle'
+		, title: 'Guide Title'
+		, text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.'
+	});
+
+	guidely.add ({
+		attachTo: '#tour4'
+		, anchor: 'top-right'
+		, title: 'Guide Title'
+		, text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.'
+	});
+
+	guidely.init ({ welcome: true, startTrigger: false });
+
+});
+</script>
+    }

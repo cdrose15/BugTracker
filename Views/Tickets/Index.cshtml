@@ -17,6 +17,9 @@
                 Created
             </th>
             <th>
+                Ticket
+            </th>
+            <th>
                 Project
             </th>
             <th>
@@ -28,19 +31,18 @@
             <th>
                 Status
             </th>
-            <th>
-                Ticket
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Owner
-            </th>
+            @*<th>
+                    Description
+                </th>*@
+            @*<th>
+                    Owner
+                </th>*@
             <th>
                 Assigned
             </th>
-            <th></th>
+            <th>
+                @*Assign/Edit/Details/Resolve*@
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +51,9 @@
             <tr>
                 <td>
                     @item.CreatedDate.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Project.Name)
@@ -62,15 +67,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @item.CreatedUser.DisplayName
-                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>*@
+                @*<td>
+                        @item.CreatedUser.DisplayName
+                    </td>*@
                 <td>
                     @if (item.AssigneeUserId != null)
                     {
@@ -78,28 +80,25 @@
                     }
                 </td>
                 <td>
+
                     @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
                     {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
+                        @Html.ActionLink("Assign", "AssignUser", new { id = item.Id }, new { @class = "btn btn-sm btn-default" })
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-default" })
                     }
-                    @if(User.IsInRole("Developer"))
+                    else if (User.IsInRole("Developer"))
                     {
-                        if(item.AssigneeUserId == User.Identity.GetUserId())
+                        if (item.AssigneeUserId == User.Identity.GetUserId())
                         {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-default" })
                         }
                     }
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-default" })
                     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
-                    @if (User.IsInRole("Administrator") || (User.IsInRole("Project Manager")))
-                    {
-                        @Html.ActionLink("Assign", "AssignUser", new { id = item.Id })
-                    }
                 </td>
             </tr>
         }
     </tbody>
-
 </table>
 
 @section scripts{

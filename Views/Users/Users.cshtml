@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<BugTracker.Models.ApplicationUser>
+@using BugTracker.Models.Helpers;
 
 <div container>
     <div class="col-md-12">
@@ -12,19 +13,30 @@
                 <th>
                     Name
                 </th>
+                <th>
+                    Current Role
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
-            {
+            { 
+            UserRolesHelper helper = new UserRolesHelper();
+            var userRoles = helper.ListUserRoles(item.Id);
+            
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
                     </td>
                     <td>
-                        @Html.ActionLink("Update Roles", "UserRoles", new { id = item.Id }, new {@class="btn btn-default"})
-
+                            @foreach (var role in userRoles)
+                            {
+                                <p>@role</p>                            
+                            }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Update Roles", "UserRoles", new { id = item.Id }, new { @class = "btn btn-default" })
                     </td>
                 </tr>
             }

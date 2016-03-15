@@ -13,7 +13,9 @@ namespace BugTracker.Models.CodeFirst
         public string OldFieldValue { get; set; }
         public string NewFieldValue { get; set; }
         public string UserId { get; set; }
+        public int TicketId { get; set; }
 
+        public virtual Ticket Ticket { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
 }

@@ -236,8 +236,9 @@
     <Compile Include="Models\CodeFirst\TicketPriority.cs" />
     <Compile Include="Models\CodeFirst\TicketStatus.cs" />
     <Compile Include="Models\CodeFirst\TicketType.cs" />
+    <Compile Include="Models\FileUploadValidator.cs" />
     <Compile Include="Models\Helpers\ProjectUsersHelper.cs" />
-    <Compile Include="Models\Helpers\TicketUserHelper.cs" />
+    <Compile Include="Models\Helpers\TicketLogsHelper.cs" />
     <Compile Include="Models\Helpers\UserRolesHelper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageUploadValidator.cs" />
@@ -254,10 +255,14 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\body-bg.png" />
+    <Content Include="img\BugLanding.png" />
     <Content Include="img\guidely-number.png" />
+    <Content Include="img\linq.png" />
+    <Content Include="img\mvcLogo %28Custom%29.png" />
     <Content Include="img\signin\check.png" />
     <Content Include="img\signin\password.png" />
     <Content Include="img\signin\user.png" />
+    <Content Include="img\SQL.png" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\base.js" />
@@ -284,6 +289,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="TemplateCSS\guidely.css" />
+    <Content Include="TemplateCSS\heroic-features.css" />
     <Content Include="TemplateCSS\signin.css" />
     <Content Include="TemplateCSS\style.css" />
     <Content Include="Web.config" />
@@ -330,7 +336,6 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
-    <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Users\Users.cshtml" />
     <Content Include="Views\Users\UserRoles.cshtml" />
     <Content Include="Views\Manage\EditProfile.cshtml" />

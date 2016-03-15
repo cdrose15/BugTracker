@@ -14,6 +14,7 @@
 
 </head>
 <body>
+    @*Top nav bar*@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -24,16 +25,19 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
+                <a class="navbar-brand" href="https://github.com/cdrose15/BugTracker" title="GitHub Repository" target="_blank"><i class="fa fa-github fa-lg"></i></a>
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    @if(User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
                     {
                         <li id="tour3">@Html.ActionLink("Projects", "Index", "Projects")</li>
                     }
-                    <li id="tour4">@Html.ActionLink("Tickets", "Index", "Tickets")</li>
-                    @if(User.IsInRole("Administrator"))
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
                     {
-                        <li id="tour2">@Html.ActionLink("Users","Users","Users")</li>
+                    <li id="tour4">@Html.ActionLink("Tickets", "Index", "Tickets")</li>
+                    }
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li id="tour2">@Html.ActionLink("Users", "Users", "Users")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

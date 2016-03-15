@@ -181,7 +181,7 @@ namespace BugTracker.Controllers
         public ActionResult ResolveTicket(int id)
         {
             var ticket = db.Tickets.Find(id);
-            ticket.TicketStatusId = 3;
+            ticket.TicketStatus.Name = "Resolved";
             db.SaveChanges();
 
             return RedirectToAction("Index");
@@ -200,13 +200,6 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
-            //var user = db.Users.Find(User.Identity.GetUserId());
-            //var developerEdit = ticket.Id.Where(d => d.AssigneeUserId == user.Id);
-            //if(ticket != developerEdit)
-            //{
-            //    TempData["editMessage"] = "You can only edit tickets that you are assigned to you.";
-            //    return RedirectToAction("Index");
-            //}
                 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);
             ViewBag.TicketPriorityId = new SelectList(db.TicketPriorities, "Id", "Name", ticket.TicketPriorityId);
@@ -225,7 +218,8 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = User.Identity.GetUserId();       
+                var user = User.Identity.GetUserId();
+                var originalEdit = db.Tickets.AsNoTracking().FirstOrDefault(o => o.Id == ticket.Id);
                 ticket.UpdatedDate = DateTime.UtcNow.ToLocalTime();
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
@@ -246,6 +240,80 @@ namespace BugTracker.Controllers
                         email.SendAsync(mail);
                     }
                 }
+
+                    if (ticket.Title != originalEdit.Title)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.Title;
+                        ticketLog.NewFieldValue = ticket.Title;
+                        ticketLog.Property = "Title";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+                    if (ticket.Description != originalEdit.Description)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.Description;
+                        ticketLog.NewFieldValue = ticket.Description;
+                        ticketLog.Property = "Description";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+                    if (ticket.ProjectId != originalEdit.ProjectId)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.Project.Name;
+                        ticketLog.NewFieldValue = db.Projects.FirstOrDefault(p => p.Id == ticket.ProjectId).Name;
+                        ticketLog.Property = "Project";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+                    if (ticket.TicketPriorityId != originalEdit.TicketPriorityId)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.TicketPriority.Name;
+                        ticketLog.NewFieldValue = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.TicketPriorityId).Name;
+                        ticketLog.Property = "Priority";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+                    if (ticket.TicketStatusId != originalEdit.TicketStatusId)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.TicketStatus.Name;
+                        ticketLog.NewFieldValue = db.TicketStatuses.FirstOrDefault(t => t.Id == ticket.TicketPriorityId).Name;
+                        ticketLog.Property = "Status";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+                    if (ticket.TicketTypeId != originalEdit.TicketTypeId)
+                    {
+                        TicketLog ticketLog = new TicketLog();
+                        ticketLog.ChangedDate = DateTime.UtcNow;
+                        ticketLog.UserId = user;
+                        ticketLog.TicketId = ticket.Id;
+                        ticketLog.OldFieldValue = originalEdit.TicketType.Name;
+                        ticketLog.NewFieldValue = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.TicketTypeId).Name;
+                        ticketLog.Property = "Type";
+                        db.TicketLogs.Add(ticketLog);
+                        db.SaveChanges();
+                    }
+
                 return RedirectToAction("Index");
             }
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", ticket.ProjectId);

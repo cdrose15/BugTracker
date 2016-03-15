@@ -9,7 +9,14 @@ namespace BugTracker.Controllers
     [RequireHttps]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Dashboard()
         {
             return View();
         }

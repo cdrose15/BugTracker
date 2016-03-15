@@ -37,6 +37,7 @@ namespace BugTracker.Controllers
                     image.SaveAs(Path.Combine(Server.MapPath("~/img/attachments/"), fileName));
                     ticketComment.Attachment = "~/img/attachments/" + fileName;
                 }
+            
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
                 db.TicketComments.Include(c => c.Ticket).Include(c => c.Ticket.AssigneeUser).FirstOrDefault(t => t.Id == ticketComment.Id);
