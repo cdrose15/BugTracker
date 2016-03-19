@@ -120,6 +120,31 @@ namespace BugTracker.Controllers
             return View(project);
         }
 
+        // GET: Projects/Create
+        [Authorize(Roles = "Administrator, Project Manager")]
+        public ActionResult DashboardCreate()
+        {
+            return View();
+        }
+
+        // POST: Projects/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator, Project Manager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DashboardCreate([Bind(Include = "Id,Name")] Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Projects.Add(project);
+
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(project);
+        }
         // GET: Projects/Edit/5
         [Authorize (Roles ="Administrator, Project Manager")]
         public PartialViewResult _Edit(int? id)

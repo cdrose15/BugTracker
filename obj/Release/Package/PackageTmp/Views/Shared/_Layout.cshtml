@@ -27,6 +27,7 @@
             <div class="navbar-collapse collapse">
                 <a class="navbar-brand" href="https://github.com/cdrose15/BugTracker" title="GitHub Repository" target="_blank"><i class="fa fa-github fa-lg"></i></a>
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
                     {
                         <li id="tour3">@Html.ActionLink("Projects", "Index", "Projects")</li>

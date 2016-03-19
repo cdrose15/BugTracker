@@ -342,6 +342,10 @@
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Projects\ProjectUsers.cshtml" />
     <Content Include="Views\Tickets\AssignUser.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Users\_DashboardUsers.cshtml" />
+    <Content Include="Views\Tickets\_DashboardTickets.cshtml" />
+    <Content Include="Views\Projects\DashboardCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="img\attachments\" />

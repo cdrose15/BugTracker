@@ -92,7 +92,7 @@ namespace BugTracker.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Dashboard", "Home");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -112,7 +112,7 @@ namespace BugTracker.Controllers
             var email = "Submitter@test.com";
             var password = "Password-1";
             var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // POST: /Account/DemoDeveloperLogin
@@ -123,7 +123,7 @@ namespace BugTracker.Controllers
             var email = "Developer@test.com";
             var password = "Password-1";
             var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // POST: /Account/DemoProjectManagerLogin
@@ -134,7 +134,7 @@ namespace BugTracker.Controllers
             var email = "ProjectMgr@test.com";
             var password = "Password-1";
             var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         // POST: /Account/DemoAdminManagerLogin
@@ -145,7 +145,7 @@ namespace BugTracker.Controllers
             var email = "Administrator@test.com";
             var password = "Password-1";
             var result = await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         //

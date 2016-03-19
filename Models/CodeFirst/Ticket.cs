@@ -14,6 +14,7 @@ namespace BugTracker.Models.CodeFirst
         {
             this.TicketComments = new HashSet<TicketComment>();
             this.TicketLogs = new HashSet<TicketLog>();
+            this.TicketNotifications = new HashSet<TicketNotification>();
             
         }
 
@@ -38,6 +39,7 @@ namespace BugTracker.Models.CodeFirst
         public virtual TicketType TicketType { get; set; }
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<TicketLog> TicketLogs { get; set;}
+        public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
 
     }
 }

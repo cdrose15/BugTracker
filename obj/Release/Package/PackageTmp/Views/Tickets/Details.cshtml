@@ -9,27 +9,8 @@
         @Html.ActionLink("Back", "Index")
     </div>
 </div>
-@if (!User.IsInRole("Developer"))
-{
-    <h4><b>Add Comment or Attach Image</b></h4>
-    <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create", "TicketComments")" method="post">
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <input type="hidden" name="TicketId" value="@Model.Id" />
-            <textarea cols="50" class="form-control" rows="1" type="hidden" name="comment"></textarea>
-        </div>
-        <div class="form-group">
-            <input name="image" type="file" class="form-control" id="fileUpload" />
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    <h6>** Attachment limited to a Jpeg, Gif, or Png between 1 KB and 2 MB in size</h6>
-
-     <br />
-}
-@if (User.IsInRole("Developer"))
-{
-    if (Model.AssigneeUserId == User.Identity.GetUserId())
+<div class="col-md-8">
+    @if (!User.IsInRole("Developer"))
     {
         <h4><b>Add Comment or Attach Image</b></h4>
         <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create", "TicketComments")" method="post">
@@ -42,9 +23,51 @@
                 <input name="image" type="file" class="form-control" id="fileUpload" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-        </form> <br />
+        </form>
+        <h6>** Attachment limited to a Jpeg, Gif, or Png between 1 KB and 2 MB in size</h6>
     }
-}
+
+    @if (User.IsInRole("Developer"))
+    {
+        if (Model.AssigneeUserId == User.Identity.GetUserId())
+        {
+            <h4><b>Add Comment or Attach Image</b></h4>
+            <form class="form-inline" role="form" enctype="multipart/form-data" action="@Url.Action("Create", "TicketComments")" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <input type="hidden" name="TicketId" value="@Model.Id" />
+                    <textarea cols="50" class="form-control" rows="1" type="hidden" name="comment"></textarea>
+                </div>
+                <div class="form-group">
+                    <input name="image" type="file" class="form-control" id="fileUpload" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        }
+    }
+</div>
+<br />
+<div class="col-md-4">
+    <h4><b>Assigned Notification</b></h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email Date</th>
+                <th>Sent To</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TicketNotifications)
+            {
+                <tr>
+                    <td>@item.SentDate.ToString("MM/dd/yyyy")</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
 <h4><b>Details</b></h4>
 <table class="table">
     <thead>

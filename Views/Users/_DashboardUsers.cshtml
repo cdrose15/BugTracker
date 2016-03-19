@@ -1,0 +1,26 @@
+﻿@model IEnumerable<BugTracker.Models.ApplicationUser>
+@using BugTracker.Models.Helpers;
+
+    <table class="table" id="users">
+        <thead>
+            <tr>
+                <th>
+                    Current Users
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                UserRolesHelper helper = new UserRolesHelper();
+                var userRoles = helper.ListUserRoles(item.Id);
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)  @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+

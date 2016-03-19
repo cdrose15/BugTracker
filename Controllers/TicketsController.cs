@@ -64,6 +64,28 @@ namespace BugTracker.Controllers
             return View(tickets.ToList());
         }
 
+        public PartialViewResult _DashboardTickets()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            var tickets = db.Tickets.Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus)
+                     .Include(t => t.TicketType);
+            var openTickets = tickets.Where(o => o.TicketStatusId == 1);
+            var assignedNotResolvedTickets = tickets.Where(a => a.AssigneeUserId == user.Id && a.TicketStatusId == 2);
+            var ownedNotResolved = tickets.Where(o => o.CreatedUserId == user.Id && o.TicketStatusId != 3);
+
+            if (User.IsInRole("Administrator") || User.IsInRole("Project Manager"))
+            {
+                return PartialView(openTickets.ToList());
+            }
+            if (User.IsInRole("Developer"))
+            {
+                return PartialView(assignedNotResolvedTickets.ToList());
+            }
+
+            return PartialView(ownedNotResolved.ToList());
+        }
+
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
         {

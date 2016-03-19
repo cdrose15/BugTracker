@@ -22,6 +22,12 @@ namespace BugTracker.Controllers
             return View(db.Users.ToList());
         }
 
+        [HttpGet]
+        public PartialViewResult _DashboardUsers()
+        {
+            return PartialView(db.Users.ToList());
+        }
+
 
         // GET: Users/UserRoles
         [HttpGet]

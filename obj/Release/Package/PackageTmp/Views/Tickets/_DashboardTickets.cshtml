@@ -1,15 +1,6 @@
 ﻿@model IEnumerable<BugTracker.Models.CodeFirst.Ticket>
 @using Microsoft.AspNet.Identity;
 
-<div class="col-md-12">
-    <div class="mypage-header panel-heading">
-        <h3>Ticket List</h3>
-        <h5 class="text-danger">@ViewBag.EditMessage</h5>
-    </div>
-</div>
-<p>
-    @Html.ActionLink("Add New Ticket", "Create",null, new { @class = "btn btn-default" })
-</p>
 <table class="table" id="tickets">
     <thead>
         <tr>
@@ -25,9 +16,9 @@
             <th>
                 Priority
             </th>
-            <th>
+            @*<th>
                 Type
-            </th>
+            </th>*@
             <th>
                 Status
             </th>
@@ -61,9 +52,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.TicketPriority.Name)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.TicketType.Name)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.TicketStatus.Name)
                 </td>
@@ -94,24 +85,8 @@
                         }
                     }
                     @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-default" })
-                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@section scripts{
-    <script type="text/javascript">
-        $('#tickets').DataTable({
-            "paging": true,
-            "pageLength": 10,
-            "bLengthChange": false,
-            "info": false,
-            "bFilter": false,
-            //"ordering": false,
-            "pagingType": "numbers",
-            "searching": true
-        });
-    </script>
-}

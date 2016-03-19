@@ -52,18 +52,9 @@
                     <li>
                         <a href="#demo">Demo</a>
                     </li>
-                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
-                    {
-                        <li id="tour3">@Html.ActionLink("Projects", "Index", "Projects")</li>
-                    }
-                    @if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
-                    {
-                        <li id="tour4">@Html.ActionLink("Tickets", "Index", "Tickets")</li>
-                    }
-                    @if (User.IsInRole("Administrator"))
-                    {
-                        <li id="tour2">@Html.ActionLink("Users", "Users", "Users")</li>
-                    }
+                    <li>
+                        @Html.ActionLink("Dashboard","Dashboard")
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
